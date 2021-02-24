@@ -1,15 +1,16 @@
 package com.example.springdataexample.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
-@Getter
-@Setter
-public class Employee {
+@Data
+public class Department {
 
     @Id
     @GenericGenerator(name = "employee_id_seq", strategy = "increment")
@@ -18,6 +19,4 @@ public class Employee {
 
     private String name;
 
-    @ManyToOne
-    private Department department;
 }
