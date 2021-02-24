@@ -12,6 +12,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -35,6 +37,11 @@ public class EmployeeServiceImpl implements EmployeeService {
             employee.setDepartment(departmentOptional.get());
         }
 
+        else {
+            Department department = new Department();
+            department.setName(employeeRequestDTO.getDepartment().getName());
+            employee.setDepartment(department);
+        }
         //save employee to db
         Employee savedEmployee = employeeRepository.save(employee);
 
@@ -55,6 +62,8 @@ public class EmployeeServiceImpl implements EmployeeService {
             EmployeeResponseDTO responseDTO = new EmployeeResponseDTO();
             BeanUtils.copyProperties(employeeOptional.get(),responseDTO);
 
+            responseDTO.setDepartmentFromEntity(employeeOptional.get().getDepartment());
+
             return  responseDTO;
         }
         return null;
@@ -71,6 +80,11 @@ public class EmployeeServiceImpl implements EmployeeService {
             Optional<Department> departmentOptional = departmentRepository.findById(employeeRequestDTO.getDepartment().getId());
             if(departmentOptional.isPresent()) {
                 employeeFromDb.setDepartment(departmentOptional.get());
+            }
+            else {
+                Department department = new Department();
+                department.setName(employeeFromDb.getDepartment().getName());
+                employeeFromDb.setDepartment(department);
             }
 
             //save in db
@@ -98,5 +112,23 @@ public class EmployeeServiceImpl implements EmployeeService {
             return  responseDTO;
         }
         return null;
+    }
+
+    @Override
+    public List<EmployeeResponseDTO> getEmployeeListByDepartment(Long departmentid) {
+
+//        Department department = departmentRepository.findById(departmentid).get();
+//        List<Employee >employeeList = employeeRepository.findByDepartment(department);
+//        List<Employee >employeeList = employeeRepository.findByDepartment_Id(departmentid);
+//        List<Employee >employeeList = employeeRepository.getEmployeeListByDepartmentIdParam(departmentid);
+        List<Employee> employeeList = employeeRepository.getEmployeeListByNativeQuery(departmentid);
+        List<EmployeeResponseDTO> employeeResponseDTOList = new ArrayList<>();
+        for (Employee employee : employeeList){
+            EmployeeResponseDTO responseDTO = new EmployeeResponseDTO();
+            BeanUtils.copyProperties(employee, responseDTO);
+            responseDTO.setDepartmentFromEntity(employee.getDepartment());
+            employeeResponseDTOList.add(responseDTO);
+        }
+        return employeeResponseDTOList;
     }
 }
