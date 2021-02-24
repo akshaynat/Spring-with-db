@@ -14,6 +14,8 @@ public class EmployeeResponseDTO {
 
     private DepartmentResponseDTO department;
 
+    private String code;
+
     public void setDepartmentFromEntity(Department departmentFromEntity) {
         DepartmentResponseDTO departmentResponseDTO = new DepartmentResponseDTO();
         departmentResponseDTO.setId(departmentFromEntity.getId());

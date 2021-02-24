@@ -1,5 +1,7 @@
 package com.example.springdataexample.controller;
 
+import com.example.springdataexample.dto.DepartmentRequestDTO;
+import com.example.springdataexample.dto.DepartmentResponseDTO;
 import com.example.springdataexample.dto.EmployeeRequestDTO;
 import com.example.springdataexample.dto.EmployeeResponseDTO;
 import com.example.springdataexample.service.EmployeeService;
@@ -44,4 +46,5 @@ public class EmployeeController {
     public List<EmployeeResponseDTO> getEmployeeListByDepartment(@PathVariable("id") Long departmentid) {
         return employeeService.getEmployeeListByDepartment(departmentid);
     }
+
 }

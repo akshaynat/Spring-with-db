@@ -20,6 +20,8 @@ public class Employee {
 
     private String name;
 
+    private String code;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonBackReference
     private Department department;

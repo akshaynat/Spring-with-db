@@ -13,5 +13,7 @@ public class EmployeeRequestDTO {
 
     private String name;
 
+    private String code;
+
     private DepartmentRequestDTO department;
 }
